@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WarEra Tools</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+  <div id="app" class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">⚔️</div>
+        <div class="brand-text">
+          <span class="brand-title">WarEra Tools</span>
+          <span class="brand-version">v1.0.0 Desktop</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="daily">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Daily Automation</span>
+        </button>
+        <button class="nav-item" data-page="battles">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-item" data-page="buyer">
+          <span class="nav-icon">🛒</span>
+          <span class="nav-label">Equipment Buyer</span>
+        </button>
+        <button class="nav-item" data-page="reseller">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Equipment Reseller</span>
+        </button>
+        <button class="nav-item" data-page="analyzer">
+          <span class="nav-icon">🔬</span>
+          <span class="nav-label">Build Analyzer</span>
+        </button>
+        <button class="nav-item" data-page="telemetry">
+          <span class="nav-icon">📡</span>
+          <span class="nav-label">Telemetry</span>
+        </button>
+        <button class="nav-item" data-page="scheduler">
+          <span class="nav-icon">⏱️</span>
+          <span class="nav-label">Scheduler</span>
+        </button>
+        <button class="nav-item" data-page="logs">
+          <span class="nav-icon">📜</span>
+          <span class="nav-label">Logs</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="session-badge" id="sidebarSessionBadge">
+          <span class="status-dot green"></span>
+          <span class="session-text" id="sidebarSessionText">Connecting...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-viewport">
+      <!-- Top Header / Bar -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">☰</button>
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        </div>
+
+        <div class="top-bar-right">
+          <!-- Global Safety Mode Indicator -->
+          <div class="safety-indicator" id="globalSafetyIndicator">
+            <span class="safety-label">MODE:</span>
+            <button class="mode-toggle-btn dry-run" id="globalDryRunToggle" title="Click to toggle between DRY-RUN and LIVE execution">
+              <span class="dot"></span>
+              <span class="text" id="globalDryRunText">DRY RUN</span>
+            </button>
+          </div>
+
+          <!-- Quick Refresh Button -->
+          <button class="btn btn-secondary btn-sm" id="globalRefreshBtn" title="Refresh current view">
+            <span class="icon">🔄</span> Refresh
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="content-container">
+        <!-- 1. DASHBOARD PAGE -->
+        <section class="page-view active" id="page-dashboard">
+          <!-- Account & Resource Cards Grid -->
+          <div class="card-grid cols-4">
+            <div class="card stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Player</span>
+                <span class="stat-icon">👤</span>
+              </div>
+              <div class="stat-value" id="dashPlayerName">-</div>
+              <div class="stat-sub" id="dashPlayerDetails">Level - • Country: -</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Wallet Gold</span>
+                <span class="stat-icon">🪙</span>
+              </div>
+              <div class="stat-value text-gold" id="dashGold">- G</div>
+              <div class="stat-sub" id="dashMilitaryUnit">MU: -</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Session Auth</span>
+                <span class="stat-icon">🔐</span>
+              </div>
+              <div class="stat-value" id="dashAuthStatus">Checking...</div>
+              <div class="stat-sub" id="dashAuthExpiry">Expires: -</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Telemetry Daemon</span>
+                <span class="stat-icon">📡</span>
+              </div>
+              <div class="stat-value" id="dashTelemetryStatus">Checking...</div>
+              <div class="stat-sub" id="dashTelemetrySamples">- live samples</div>
+            </div>
+          </div>
+
+          <!-- Resource Bars -->
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Live Resources</h2>
+              <span class="badge blue">Read-Only Inspection</span>
+            </div>
+            <div class="resource-grid">
+              <div class="resource-item">
+                <div class="resource-label">
+                  <span>❤️ Health</span>
+                  <strong id="dashHpVal">- / -</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill hp" id="dashHpBar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="resource-item">
+                <div class="resource-label">
+                  <span>🍴 Hunger</span>
+                  <strong id="dashHungerVal">- / -</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill hunger" id="dashHungerBar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="resource-item">
+                <div class="resource-label">
+                  <span>⚡ Energy</span>
+                  <strong id="dashEnergyVal">- / -</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill energy" id="dashEnergyBar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="resource-item">
+                <div class="resource-label">
+                  <span>🧠 Entrepreneurship</span>
+                  <strong id="dashEntVal">- / -</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill ent" id="dashEntBar" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Status Widgets -->
+          <div class="card-grid cols-2">
+            <div class="card section-card">
+              <div class="card-header">
+                <h3 class="card-title">Automation & Scheduler</h3>
+              </div>
+              <div class="info-list">
+                <div class="info-row">
+                  <span class="info-name">Last Daily Automation:</span>
+                  <span class="info-data" id="dashLastDaily">-</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-name">Daily Scheduled Task:</span>
+                  <span class="info-data" id="dashDailyTaskState">-</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-name">Telemetry Scheduled Task:</span>
+                  <span class="info-data" id="dashTelemetryTaskState">-</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-name">Recent Battle Execution:</span>
+                  <span class="info-data" id="dashLastBattleResult">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card section-card">
+              <div class="card-header">
+                <h3 class="card-title">Recent Purchases & Transactions</h3>
+              </div>
+              <div class="compact-table-wrap">
+                <table class="compact-table" id="dashTransactionsTable">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Amount</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="4" class="text-center text-muted">No recent transactions recorded</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. DAILY AUTOMATION PAGE -->
+        <section class="page-view" id="page-daily">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Daily Tasks Automator</h2>
+              <span class="badge blue">Modular Routine</span>
+            </div>
+
+            <div class="control-toolbar">
+              <div class="control-group">
+                <label for="dailyModeSelect">Mode:</label>
+                <select id="dailyModeSelect" class="form-select">
+                  <option value="nothing">Nothing (Safe Daily Drain)</option>
+                  <option value="resistance">Resistance Only</option>
+                  <option value="battles">Battles Only</option>
+                  <option value="both">Both (Resistance + Battles)</option>
+                </select>
+              </div>
+
+              <div class="control-group checkbox-group">
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="dailyHeadlessToggle" checked>
+                  <span>Headless Browser</span>
+                </label>
+              </div>
+
+              <div class="toolbar-actions">
+                <button class="btn btn-primary" id="dailyRunBtn">
+                  <span class="icon">▶</span> Run Now
+                </button>
+                <button class="btn btn-danger" id="dailyCancelBtn" disabled>
+                  <span class="icon">⏹</span> Cancel
+                </button>
+              </div>
+            </div>
+
+            <!-- Execution Stages Progress -->
+            <div class="stage-stepper" id="dailyStepper">
+              <div class="step-item" data-stage="Companies">
+                <div class="step-circle">1</div>
+                <div class="step-label">Companies</div>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-item" data-stage="Military Unit">
+                <div class="step-circle">2</div>
+                <div class="step-label">Military Unit</div>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-item" data-stage="Resistance">
+                <div class="step-circle">3</div>
+                <div class="step-label">Resistance</div>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-item" data-stage="Battles">
+                <div class="step-circle">4</div>
+                <div class="step-label">Battles</div>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-item" data-stage="Summary">
+                <div class="step-circle">5</div>
+                <div class="step-label">Summary</div>
+              </div>
+            </div>
+
+            <!-- Live Streaming Console -->
+            <div class="terminal-container">
+              <div class="terminal-header">
+                <span>Console Stream</span>
+                <button class="btn btn-xs btn-secondary" id="dailyClearLogBtn">Clear View</button>
+              </div>
+              <div class="terminal-body" id="dailyTerminal">
+                <div class="log-line text-muted">[SYSTEM] Ready to start Daily Automation sequence.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. BATTLES PAGE -->
+        <section class="page-view" id="page-battles">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Battle Intelligence & Execution</h2>
+              <div class="header-badges">
+                <span class="badge blue" id="battlesCountBadge">0 active battles</span>
+                <span class="badge green" id="battlesTopTargetBadge">Top Target: None</span>
+              </div>
+            </div>
+
+            <div class="control-toolbar">
+              <div class="toolbar-actions">
+                <button class="btn btn-secondary" id="battlesRefreshBtn">
+                  <span class="icon">🔄</span> Refresh Battles
+                </button>
+                <button class="btn btn-danger" id="battlesExecuteBtn">
+                  <span class="icon">⚔️</span> Execute Battle Mode
+                </button>
+              </div>
+            </div>
+
+            <!-- Battles Table -->
+            <div class="table-container">
+              <table class="data-table" id="battlesTable">
+                <thead>
+                  <tr>
+                    <th>Target</th>
+                    <th>Region / ID</th>
+                    <th>Type</th>
+                    <th>Country War</th>
+                    <th>Country Order</th>
+                    <th>MU Order</th>
+                    <th>Consensus</th>
+                    <th>Resolved Side</th>
+                    <th>Bonus</th>
+                    <th>Bounty</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="12" class="text-center text-muted">Click Refresh Battles to inspect active combat</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Hit Execution Results Stream -->
+            <div class="hit-results-container" id="battlesExecutionStream" style="display: none;">
+              <h3 class="subsection-title">Execution Hits</h3>
+              <div class="hit-cards-grid" id="battlesHitCards"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. EQUIPMENT BUYER PAGE -->
+        <section class="page-view" id="page-buyer">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Market Equipment Buyer</h2>
+              <span class="badge blue">Exhaustive Pareto Optimization</span>
+            </div>
+
+            <div class="buyer-controls-card">
+              <div class="buyer-controls-grid">
+                <!-- Rarity Group -->
+                <div class="control-box">
+                  <span class="control-label">Equipment Rarity</span>
+                  <div class="rarity-pills" id="buyerRarityGroup">
+                    <label class="rarity-pill grey"><input type="radio" name="buyerRarity" value="grey"><span>Grey</span></label>
+                    <label class="rarity-pill green active"><input type="radio" name="buyerRarity" value="green" checked><span>Green</span></label>
+                    <label class="rarity-pill blue"><input type="radio" name="buyerRarity" value="blue"><span>Blue</span></label>
+                    <label class="rarity-pill purple"><input type="radio" name="buyerRarity" value="purple"><span>Purple</span></label>
+                    <label class="rarity-pill gold"><input type="radio" name="buyerRarity" value="gold"><span>Gold</span></label>
+                    <label class="rarity-pill red"><input type="radio" name="buyerRarity" value="red"><span>Red</span></label>
+                  </div>
+                </div>
+
+                <!-- Budget Group -->
+                <div class="control-box budget-box">
+                  <span class="control-label">Maximum Budget (Optional)</span>
+                  <div class="input-with-addon">
+                    <span class="input-addon">Gold</span>
+                    <input type="number" id="buyerBudgetInput" class="form-input" placeholder="No Limit (All Market)" min="0" step="0.1">
+                  </div>
+                </div>
+              </div>
+
+              <div class="buyer-controls-bottom">
+                <!-- Categories Group -->
+                <div class="control-box flex-1">
+                  <span class="control-label">Target Categories</span>
+                  <div class="category-pills" id="buyerSlotsGroup">
+                    <label class="cat-pill active"><input type="checkbox" value="helmet" checked><span class="cat-check">✓</span><span>Helmet</span></label>
+                    <label class="cat-pill active"><input type="checkbox" value="chest" checked><span class="cat-check">✓</span><span>Chest</span></label>
+                    <label class="cat-pill active"><input type="checkbox" value="gloves" checked><span class="cat-check">✓</span><span>Gloves</span></label>
+                    <label class="cat-pill active"><input type="checkbox" value="pants" checked><span class="cat-check">✓</span><span>Pants</span></label>
+                    <label class="cat-pill active"><input type="checkbox" value="boots" checked><span class="cat-check">✓</span><span>Boots</span></label>
+                    <label class="cat-pill"><input type="checkbox" value="weapon"><span class="cat-check">✓</span><span>Weapon</span></label>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="buyer-actions">
+                  <button class="btn btn-primary btn-lg" id="buyerAnalyzeBtn">
+                    <span class="icon">🔍</span> Analyze Live Market
+                  </button>
+                  <button class="btn btn-secondary btn-lg" id="buyerCancelBtn" style="display: none;">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Incomplete Market Fail-Closed Warning -->
+            <div class="alert-box error" id="buyerIncompleteAlert" style="display: none;">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-content">
+                <strong>MARKET COVERAGE INCOMPLETE</strong>
+                <p id="buyerIncompleteMsg">Market scan did not reach exhaustion. Recommendations cannot be trusted and are blocked.</p>
+              </div>
+            </div>
+
+            <!-- Progress Box -->
+            <div class="scan-progress-box" id="buyerProgressBox" style="display: none;">
+              <div class="spinner"></div>
+              <div class="progress-details" id="buyerProgressText">Scanning market...</div>
+            </div>
+
+            <!-- Initial State Placeholder -->
+            <div class="empty-state-card" id="buyerInitialPlaceholder">
+              <div class="empty-state-icon">🛒</div>
+              <h3>Ready to Scan Market</h3>
+              <p>Select your equipment rarity and categories above, then click <strong>Analyze Live Market</strong> to discover Pareto-optimal loadouts across Best Value, Best Performance, and Cheapest strategies.</p>
+            </div>
+
+            <!-- 3 Selectable Strategy Cards -->
+            <div class="strategy-cards-grid" id="buyerStrategyCards" style="display: none;">
+              <div class="strategy-card active" data-strategy="best-value" id="cardStratBestValue">
+                <div class="strat-header">
+                  <span class="strat-badge">RECOMMENDED</span>
+                  <h3>BEST VALUE</h3>
+                </div>
+                <div class="strat-cost" id="cardBvCost">0.000 G</div>
+                <div class="strat-metric" id="cardBvMetric">Avg Roll: 0%</div>
+                <div class="strat-desc">Maximizes stat efficiency per Gold spent</div>
+              </div>
+
+              <div class="strategy-card" data-strategy="best-performance" id="cardStratBestPerf">
+                <div class="strat-header">
+                  <span class="strat-badge purple">MAX STATS</span>
+                  <h3>BEST PERFORMANCE</h3>
+                </div>
+                <div class="strat-cost" id="cardBpCost">0.000 G</div>
+                <div class="strat-metric" id="cardBpMetric">Avg Roll: 0%</div>
+                <div class="strat-desc">Highest raw stats regardless of price</div>
+              </div>
+
+              <div class="strategy-card" data-strategy="cheapest" id="cardStratCheapest">
+                <div class="strat-header">
+                  <span class="strat-badge green">BUDGET</span>
+                  <h3>CHEAPEST</h3>
+                </div>
+                <div class="strat-cost" id="cardChCost">0.000 G</div>
+                <div class="strat-metric" id="cardChMetric">Avg Roll: 0%</div>
+                <div class="strat-desc">Lowest possible acquisition cost</div>
+              </div>
+            </div>
+
+            <!-- Buyer Results Summary & Table -->
+            <div class="results-container" id="buyerResultsContainer" style="display: none;">
+              <div class="results-header">
+                <div class="results-header-left">
+                  <h3 class="subsection-title" id="buyerSelectedLoadoutTitle">Selected Loadout</h3>
+                  <div class="loadout-summary-chips">
+                    <span class="chip">Cost: <strong id="buyerTotalCost">0 G</strong></span>
+                    <span class="chip">Quality: <strong id="buyerTotalQuality">0 / 5</strong></span>
+                    <span class="chip">Market Val: <strong id="buyerTotalMarketVal">0 G</strong></span>
+                    <span class="chip">Discount: <strong id="buyerTotalDiscount">0 G</strong></span>
+                  </div>
+                </div>
+                <button class="btn btn-success btn-lg" id="buyerPurchaseBtn" disabled>
+                  <span class="icon">🛒</span> Purchase Loadout
+                </button>
+              </div>
+
+              <div class="table-container">
+                <table class="data-table" id="buyerTable">
+                  <thead>
+                    <tr>
+                      <th>Slot</th>
+                      <th>Item</th>
+                      <th>Stats</th>
+                      <th>Live Range</th>
+                      <th>Roll %</th>
+                      <th>Price</th>
+                      <th>Market Value</th>
+                      <th>Discount</th>
+                      <th>Market Max</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+
+              <!-- Pipeline Diagnostics Expandable Panel -->
+              <details class="diagnostics-panel" id="buyerDiagnostics">
+                <summary>Market Pipeline Diagnostics (Fetched, Valid, Pareto & Distribution)</summary>
+                <div class="diagnostics-content" id="buyerDiagnosticsContent"></div>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. EQUIPMENT RESELLER PAGE -->
+        <section class="page-view" id="page-reseller">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Equipment Reseller & Inventory Audit</h2>
+              <span class="badge blue">Stat-Aware & Crit-First Pricing</span>
+            </div>
+
+            <div class="reseller-controls-card">
+              <div class="reseller-controls-grid">
+                <div class="control-box">
+                  <label class="control-label" for="resellerPricingSelect">Pricing Strategy</label>
+                  <select id="resellerPricingSelect" class="form-select">
+                    <option value="competitive">Competitive (Lowest Non-Outlier Comp)</option>
+                    <option value="median">Median (Fair Market Value)</option>
+                    <option value="quick">Quick Sale (3.5% Undercut)</option>
+                  </select>
+                </div>
+
+                <div class="control-box">
+                  <label class="control-label" for="resellerMaxListingsInput">Max Staged Listings</label>
+                  <div class="input-with-addon">
+                    <input type="number" id="resellerMaxListingsInput" class="form-input" value="1" min="1" max="20">
+                    <span class="input-addon">Items</span>
+                  </div>
+                </div>
+
+                <div class="reseller-actions">
+                  <button class="btn btn-secondary btn-lg" id="resellerAuditBtn">
+                    <span class="icon">🔍</span> Audit Inventory
+                  </button>
+                  <button class="btn btn-success btn-lg" id="resellerExecuteBtn" disabled>
+                    <span class="icon">🚀</span> Execute Listings
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reseller Progress Indicator -->
+            <div class="scan-progress-box" id="resellerProgressBox" style="display: none;">
+              <div class="spinner"></div>
+              <div class="progress-details" id="resellerProgressText">Scanning inventory & evaluating live market pricing...</div>
+            </div>
+
+            <!-- Reseller Initial Placeholder -->
+            <div class="empty-state-card" id="resellerInitialPlaceholder">
+              <div class="empty-state-icon">💰</div>
+              <h3>Ready to Audit Inventory</h3>
+              <p>Click <strong>Audit Inventory</strong> to scan all equipment in your inventory, identify sub-max roll sell candidates, evaluate live market comparables, and enforce absolute protection for perfect rolls and max-crit weapons.</p>
+            </div>
+
+            <!-- Audit Metrics Chips -->
+            <div class="card-grid cols-5" id="resellerAuditChips" style="display: none;">
+              <div class="mini-card">
+                <span class="mini-label">Items Scanned</span>
+                <span class="mini-val" id="resellerTotalScanned">0</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Sell Candidates</span>
+                <span class="mini-val text-green" id="resellerSellCandidates">0</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Executable</span>
+                <span class="mini-val text-accent" id="resellerExecutableCount">0</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Held / Protected</span>
+                <span class="mini-val text-yellow" id="resellerHeldCount">0</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Market Tax</span>
+                <span class="mini-val" id="resellerTaxRate">1%</span>
+              </div>
+            </div>
+
+            <!-- Reseller Table Container -->
+            <div class="table-container" id="resellerTableContainer" style="display: none;">
+              <table class="data-table" id="resellerTable">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Stats</th>
+                    <th>Roll</th>
+                    <th>Exact Comps</th>
+                    <th>Near Comps</th>
+                    <th>Seller Price</th>
+                    <th>Buyer Price</th>
+                    <th>Confidence</th>
+                    <th>Decision</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. ANALYZER PAGE -->
+        <section class="page-view" id="page-analyzer">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Build & Damage Optimizer</h2>
+              <div class="header-badges">
+                <button class="btn btn-secondary btn-sm" id="analyzerRunBtn">
+                  <span class="icon">🔬</span> Run Full Analysis
+                </button>
+              </div>
+            </div>
+
+            <!-- Combat & Efficiency Highlights -->
+            <div class="card-grid cols-3" id="analyzerSummaryCards">
+              <div class="card stat-card">
+                <div class="stat-title">Damage per Hit</div>
+                <div class="stat-value text-accent" id="analyzerExpectedDamage">-</div>
+                <div class="stat-sub">Model calculated</div>
+              </div>
+              <div class="card stat-card">
+                <div class="stat-title">Theoretical Optimal</div>
+                <div class="stat-value text-gold" id="analyzerOptimalDamage">-</div>
+                <div class="stat-sub">Optimal respec damage</div>
+              </div>
+              <div class="card stat-card">
+                <div class="stat-title">Build Efficiency</div>
+                <div class="stat-value" id="analyzerEfficiency">- %</div>
+                <div class="stat-sub">Compared to optimal</div>
+              </div>
+            </div>
+
+            <div class="card-grid cols-2">
+              <!-- Respec Advice Card -->
+              <div class="card section-card">
+                <div class="card-header">
+                  <h3 class="card-title">Legal Respec Advice</h3>
+                </div>
+                <div id="analyzerRespecContent" class="info-content">
+                  <p class="text-muted">Run analysis to see optimal stat point redistribution.</p>
+                </div>
+              </div>
+
+              <!-- Skill Investment ROI Card -->
+              <div class="card section-card">
+                <div class="card-header">
+                  <h3 class="card-title">Skill Investment ROI</h3>
+                </div>
+                <div class="compact-table-wrap">
+                  <table class="compact-table" id="analyzerRoiTable">
+                    <thead>
+                      <tr>
+                        <th>Skill</th>
+                        <th>Type</th>
+                        <th>Upgrade</th>
+                        <th>Cost</th>
+                        <th>Gain</th>
+                        <th>ROI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td colspan="6" class="text-center text-muted">-</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leaderboard Benchmark Gaps -->
+            <div class="card section-card">
+              <div class="card-header">
+                <h3 class="card-title">Stat Gaps vs Top-Player Median</h3>
+              </div>
+              <div class="table-container">
+                <table class="data-table" id="analyzerGapsTable">
+                  <thead>
+                    <tr>
+                      <th>Stat</th>
+                      <th>Mine</th>
+                      <th>Top Median</th>
+                      <th>Ratio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="4" class="text-center text-muted">-</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. TELEMETRY PAGE -->
+        <section class="page-view" id="page-telemetry">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Battle Availability Telemetry</h2>
+              <span class="badge blue">24/7 Availability Tracker</span>
+            </div>
+
+            <div class="control-toolbar">
+              <div class="control-group">
+                <label for="telemetryIntervalSelect">Interval:</label>
+                <select id="telemetryIntervalSelect" class="form-select">
+                  <option value="5m">5 Minutes (Recommended)</option>
+                  <option value="10m">10 Minutes</option>
+                  <option value="15m">15 Minutes</option>
+                  <option value="30m">30 Minutes</option>
+                </select>
+              </div>
+
+              <div class="toolbar-actions">
+                <button class="btn btn-success" id="telemetryStartBtn">
+                  <span class="icon">▶</span> Start Daemon
+                </button>
+                <button class="btn btn-danger" id="telemetryStopBtn">
+                  <span class="icon">⏹</span> Stop Daemon
+                </button>
+                <button class="btn btn-secondary" id="telemetryInstallTaskBtn">
+                  Install Startup Task
+                </button>
+                <button class="btn btn-secondary" id="telemetryUninstallTaskBtn">
+                  Remove Startup Task
+                </button>
+              </div>
+            </div>
+
+            <!-- Telemetry Metrics Grid -->
+            <div class="card-grid cols-4">
+              <div class="mini-card">
+                <span class="mini-label">Observed Coverage</span>
+                <span class="mini-val text-green" id="telemCoverage">- %</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Confidence Rating</span>
+                <span class="mini-val text-accent" id="telemConfidence">-</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Known Qualifying Hours</span>
+                <span class="mini-val" id="telemBattleHours">- h</span>
+              </div>
+              <div class="mini-card">
+                <span class="mini-label">Longest Known Lull</span>
+                <span class="mini-val text-yellow" id="telemLullHours">-</span>
+              </div>
+            </div>
+
+            <!-- Schema Breakdown -->
+            <div class="schema-info-bar">
+              <span class="chip">Schema v1 (Historical): <strong id="telemV1Count">0</strong></span>
+              <span class="chip">Schema v2 (Full Decision): <strong id="telemV2Count">0</strong></span>
+              <span class="chip text-muted">Never fabricates fields across schemas</span>
+            </div>
+
+            <!-- 24h Heatmap -->
+            <div class="heatmap-section">
+              <h3 class="subsection-title">24-Hour Availability Heatmap (UTC)</h3>
+              <div class="heatmap-grid" id="telemHeatmap"></div>
+            </div>
+
+            <!-- Recent Executions Log -->
+            <div class="card section-card">
+              <div class="card-header">
+                <h3 class="card-title">Recent Combat Execution Telemetry</h3>
+              </div>
+              <div class="compact-table-wrap">
+                <table class="compact-table" id="telemExecutionsTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Battle ID</th>
+                      <th>State</th>
+                      <th>Damage</th>
+                      <th>Health Spent</th>
+                      <th>Host</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. SCHEDULER PAGE -->
+        <section class="page-view" id="page-scheduler">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">Windows Scheduled Tasks Manager</h2>
+              <span class="badge blue">Direct Windows Integration</span>
+            </div>
+
+            <div class="card-grid cols-2">
+              <!-- WarEraDailyAutomator Task Card -->
+              <div class="card section-card task-card">
+                <div class="card-header">
+                  <h3 class="card-title">WarEraDailyAutomator</h3>
+                  <span class="badge" id="schedDailyBadge">Unknown</span>
+                </div>
+                <div class="info-list">
+                  <div class="info-row">
+                    <span class="info-name">Task Name:</span>
+                    <span class="info-data">\WarEraDailyAutomator</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Status:</span>
+                    <span class="info-data" id="schedDailyStatus">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Last Run:</span>
+                    <span class="info-data" id="schedDailyLastRun">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Next Run:</span>
+                    <span class="info-data" id="schedDailyNextRun">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Cadence:</span>
+                    <select id="schedDailyCadenceSelect" class="form-select form-select-sm">
+                      <option value="10m">10 Minutes (Default)</option>
+                      <option value="15m">15 Minutes</option>
+                      <option value="30m">30 Minutes</option>
+                      <option value="1h">1 Hour</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="task-actions">
+                  <button class="btn btn-sm btn-primary" id="schedDailyInstallBtn">Install</button>
+                  <button class="btn btn-sm btn-secondary" id="schedDailyEnableBtn">Enable</button>
+                  <button class="btn btn-sm btn-secondary" id="schedDailyDisableBtn">Disable</button>
+                  <button class="btn btn-sm btn-danger" id="schedDailyUninstallBtn">Remove</button>
+                </div>
+              </div>
+
+              <!-- WarEraBattleTelemetry Task Card -->
+              <div class="card section-card task-card">
+                <div class="card-header">
+                  <h3 class="card-title">WarEraBattleTelemetry</h3>
+                  <span class="badge" id="schedTelemBadge">Unknown</span>
+                </div>
+                <div class="info-list">
+                  <div class="info-row">
+                    <span class="info-name">Task Name:</span>
+                    <span class="info-data">\WarEraBattleTelemetry</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Status:</span>
+                    <span class="info-data" id="schedTelemStatus">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Last Run:</span>
+                    <span class="info-data" id="schedTelemLastRun">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-name">Schedule:</span>
+                    <span class="info-data" id="schedTelemSchedule">At logon / boot</span>
+                  </div>
+                </div>
+
+                <div class="task-actions">
+                  <button class="btn btn-sm btn-primary" id="schedTelemInstallBtn">Install</button>
+                  <button class="btn btn-sm btn-secondary" id="schedTelemEnableBtn">Enable</button>
+                  <button class="btn btn-sm btn-secondary" id="schedTelemDisableBtn">Disable</button>
+                  <button class="btn btn-sm btn-danger" id="schedTelemUninstallBtn">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. LOGS VIEWER PAGE -->
+        <section class="page-view" id="page-logs">
+          <div class="card section-card">
+            <div class="card-header">
+              <h2 class="card-title">System & Operation Logs</h2>
+              <button class="btn btn-secondary btn-sm" id="logsOpenFolderBtn">
+                <span class="icon">📁</span> Open Log Folder
+              </button>
+            </div>
+
+            <div class="control-toolbar">
+              <div class="control-group">
+                <label for="logsCategorySelect">Source:</label>
+                <select id="logsCategorySelect" class="form-select">
+                  <option value="daily">Daily Automation Log</option>
+                  <option value="battle">Battle Executions Log</option>
+                  <option value="telemetry">Telemetry Samples Log</option>
+                  <option value="buyer">Buyer Operations</option>
+                  <option value="reseller">Reseller Operations</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="logsLevelSelect">Level:</label>
+                <select id="logsLevelSelect" class="form-select">
+                  <option value="">All Levels</option>
+                  <option value="INFO">INFO</option>
+                  <option value="WARN">WARNING</option>
+                  <option value="ERROR">ERROR</option>
+                  <option value="SUCCESS">SUCCESS</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <input type="text" id="logsSearchInput" class="form-input" placeholder="Search logs...">
+              </div>
+
+              <div class="toolbar-actions">
+                <button class="btn btn-secondary" id="logsCopyBtn">Copy</button>
+                <button class="btn btn-secondary" id="logsClearViewBtn" title="Clears current view only. Never deletes files on disk.">
+                  Clear View
+                </button>
+              </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="terminal-container logs-tall">
+              <div class="terminal-body" id="logsTerminal"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. SETTINGS PAGE -->
+        <section class="page-view" id="page-settings">
+          <div class="settings-page-container">
+
+            <!-- Top Header Action Card -->
+            <div class="settings-header-card">
+              <div class="settings-header-text">
+                <h2 class="settings-title">Application Settings & Configuration</h2>
+                <p class="settings-subtitle">Manage session credentials, combat thresholds, and application storage.</p>
+              </div>
+              <button class="btn btn-primary btn-lg" id="settingsSaveBtn">
+                <span class="icon">💾</span> Save Changes
+              </button>
+            </div>
+
+            <!-- 1. Session & Authentication Card -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="card-header-icon">🔐</div>
+                <div class="card-header-titles">
+                  <h3 class="settings-section-title">Session & Authentication</h3>
+                  <p class="settings-section-desc">Live WarEra session token and cookie state for authenticated actions.</p>
+                </div>
+              </div>
+
+              <div class="session-credentials-box">
+                <div class="credential-row">
+                  <div class="credential-key">
+                    <span class="key-icon">🔑</span>
+                    <span>Session Token (JWT)</span>
+                  </div>
+                  <div class="credential-val">
+                    <code class="token-code" id="settingsMaskedToken">••••••••</code>
+                  </div>
+                </div>
+                <div class="credential-row">
+                  <div class="credential-key">
+                    <span class="key-icon">⏳</span>
+                    <span>Expiration</span>
+                  </div>
+                  <div class="credential-val">
+                    <span class="expiry-text" id="settingsExpiryText">-</span>
+                  </div>
+                </div>
+                <div class="credential-row">
+                  <div class="credential-key">
+                    <span class="key-icon">📁</span>
+                    <span>Cookies Path</span>
+                  </div>
+                  <div class="credential-val">
+                    <code class="path-code" id="settingsCookiesPath">-</code>
+                  </div>
+                </div>
+              </div>
+
+              <div class="token-action-panel">
+                <label class="setting-field-title" for="settingsDirectTokenInput">Manual Token Update</label>
+                <div class="token-input-group">
+                  <div class="input-with-addon token-input-addon-wrap">
+                    <span class="input-addon">JWT</span>
+                    <input type="password" id="settingsDirectTokenInput" class="form-input" placeholder="Paste full JWT token or jwt=...">
+                  </div>
+                  <button class="btn btn-secondary" id="settingsUpdateTokenBtn">
+                    <span class="icon">🔄</span> Update Token
+                  </button>
+                  <button class="btn btn-primary" id="settingsLaunchBrowserBtn">
+                    <span class="icon">🌐</span> Launch Browser Login
+                  </button>
+                </div>
+                <span class="field-hint">Your session token is stored locally in your AppData directory and is never shared or transmitted outside WarEra API.</span>
+              </div>
+            </div>
+
+            <!-- 2. Automation & Combat Defaults Card -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="card-header-icon">⚙️</div>
+                <div class="card-header-titles">
+                  <h3 class="settings-section-title">Automation & Combat Defaults</h3>
+                  <p class="settings-section-desc">Default parameters used across Buyer, Reseller, Battles, and Background Daemon.</p>
+                </div>
+              </div>
+
+              <div class="settings-options-grid">
+                <div class="setting-field">
+                  <label class="setting-label" for="settingsDefaultBuyerStrat">
+                    <span class="setting-label-text">Default Buyer Strategy</span>
+                    <span class="setting-subtext">Preferred strategy when calculating market recommendations.</span>
+                  </label>
+                  <select id="settingsDefaultBuyerStrat" class="form-select">
+                    <option value="best-value">Best Value (Balanced Quality & Cost)</option>
+                    <option value="best-performance">Best Performance (Max Stats)</option>
+                    <option value="cheapest">Cheapest (Lowest Acquisition Cost)</option>
+                  </select>
+                </div>
+
+                <div class="setting-field">
+                  <label class="setting-label" for="settingsBattleHpFloor">
+                    <span class="setting-label-text">Battle Resource Floor (HP)</span>
+                    <span class="setting-subtext">Safety floor: hit execution stops if health drops below this.</span>
+                  </label>
+                  <div class="input-with-addon">
+                    <input type="number" id="settingsBattleHpFloor" class="form-input" value="10" min="5" max="100">
+                    <span class="input-addon suffix">% HP</span>
+                  </div>
+                </div>
+
+                <div class="setting-field">
+                  <label class="setting-label" for="settingsResellerMaxListings">
+                    <span class="setting-label-text">Default Reseller Max Listings</span>
+                    <span class="setting-subtext">Maximum number of items staged for market listing per run.</span>
+                  </label>
+                  <div class="input-with-addon">
+                    <input type="number" id="settingsResellerMaxListings" class="form-input" value="1" min="1" max="20">
+                    <span class="input-addon suffix">Items</span>
+                  </div>
+                </div>
+
+                <div class="setting-field">
+                  <label class="setting-label" for="settingsCdpUrl">
+                    <span class="setting-label-text">Chrome DevTools Protocol (CDP) URL</span>
+                    <span class="setting-subtext">Endpoint to attach automation to an active browser instance.</span>
+                  </label>
+                  <input type="text" id="settingsCdpUrl" class="form-input" value="http://localhost:9222">
+                </div>
+              </div>
+
+              <!-- Run in Background Switch -->
+              <div class="setting-toggle-card">
+                <div class="toggle-text">
+                  <strong>Run in Background (System Tray)</strong>
+                  <span>When enabled, closing the window minimizes WarEra Tools to the Windows system tray rather than quitting.</span>
+                </div>
+                <label class="toggle-switch" for="settingsRunInBackground">
+                  <input type="checkbox" id="settingsRunInBackground">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 3. Data Storage & Migration Card -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="card-header-icon">💾</div>
+                <div class="card-header-titles">
+                  <h3 class="settings-section-title">Data Storage & Migration</h3>
+                  <p class="settings-section-desc">Manage runtime paths and import telemetry and credentials from repository files.</p>
+                </div>
+              </div>
+
+              <div class="storage-container">
+                <div class="storage-info">
+                  <span class="storage-label">Packaged Runtime Storage:</span>
+                  <code class="path-code" id="settingsAppDataPath">%APPDATA%\WarEraTools</code>
+                  <span class="storage-note">All cookies, telemetry, and scheduler configs are stored in this isolated directory.</span>
+                </div>
+
+                <div class="storage-actions" id="settingsMigrationBox">
+                  <button class="btn btn-secondary btn-lg" id="settingsImportRepoBtn">
+                    <span class="icon">📦</span> Import Existing WarEra Repository Data
+                  </button>
+                  <span class="migration-note" id="settingsMigrationStatus">Safe non-destructive copy — originals in repository will never be altered.</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Global Confirmation Modal -->
+    <div class="modal-backdrop" id="confirmModalBackdrop" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title" id="confirmModalTitle">Confirm Action</h3>
+          <button class="modal-close" id="confirmModalClose">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmModalMessage">Are you sure you want to proceed?</p>
+          <div class="confirm-summary-box" id="confirmModalSummary"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="confirmModalCancel">Cancel</button>
+          <button class="btn btn-primary" id="confirmModalProceed">Confirm & Execute</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

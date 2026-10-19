@@ -1,0 +1,93 @@
+{
+  "name": "warera-tools",
+  "version": "1.0.0",
+  "description": "Automation, market intelligence, equipment optimizer, and analytics suite for the War Era browser game.",
+  "main": "gui/main/main.mjs",
+  "scripts": {
+    "test": "node test_battles.mjs && node test_equipment_reseller.mjs && node test_equipment_buyer.mjs && node test_recorder_reliability.mjs && node test_telemetry_hardening.mjs && node test_telemetry_schema_v2.mjs && node test_daily_task.mjs && node test_gui_services.mjs",
+    "test:battles": "node test_battles.mjs",
+    "test:reseller": "node test_equipment_reseller.mjs",
+    "test:buyer": "node test_equipment_buyer.mjs",
+    "test:telemetry": "node test_telemetry_hardening.mjs && node test_telemetry_schema_v2.mjs",
+    "test:recorder": "node test_recorder_reliability.mjs",
+    "test:task": "node test_daily_task.mjs",
+    "test:gui": "node test_gui_services.mjs",
+    "dev": "node daily_automator.mjs",
+    "daily": "node daily_automator.mjs",
+    "daily:install": "node daily_automator.mjs --install-task",
+    "daily:uninstall": "node daily_automator.mjs --uninstall-task",
+    "daily:status": "node daily_automator.mjs --task-status",
+    "analyze": "node analyze.mjs",
+    "battle-telemetry": "node battle_telemetry.mjs",
+    "battle-telemetry:install": "node battle_telemetry.mjs --install-task",
+    "battle-telemetry:uninstall": "node battle_telemetry.mjs --uninstall-task",
+    "equipment-reseller": "node equipment_reseller.mjs",
+    "equipment-buyer": "node equipment_buyer.mjs",
+    "login": "node login.mjs",
+    "login:status": "node login.mjs --status",
+    "gui": "electron gui/main/main.mjs",
+    "gui:dev": "electron gui/main/main.mjs",
+    "gui:build": "electron-builder --win",
+    "gui:portable": "electron-builder --win portable"
+  },
+  "keywords": [
+    "warera",
+    "automation",
+    "electron",
+    "nodejs",
+    "game-tools",
+    "telemetry",
+    "equipment-analysis",
+    "market-analyzer",
+    "pareto-optimization"
+  ],
+  "author": "Othmane EL ALAMI <othmane-elalami@outlook.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Othmane-ElAlami/War-Era-Tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Othmane-ElAlami/War-Era-Tools/issues"
+  },
+  "homepage": "https://github.com/Othmane-ElAlami/War-Era-Tools#readme",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^6.0.0",
+    "node-cron": "^4.2.1",
+    "ora": "^9.4.1",
+    "playwright-core": "^1.59.1",
+    "string-width": "^7.2.0",
+    "strip-ansi": "^7.1.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.warera.tools",
+    "productName": "WarEra Tools",
+    "npmRebuild": false,
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "WarEraTools.exe"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!test_*.mjs",
+      "!tests/**",
+      "!*.log"
+    ],
+    "asar": true
+  }
+}

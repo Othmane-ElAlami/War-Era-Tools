@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+cookies.json
+*.pem
+*.key
+
+# Build & packaging output
+dist/
+build/
+out/
+*.exe
+*.dll
+*.asar
+
+# Runtime data, telemetry state & logs
+*.log
+data/**/*.log
+data/*.log
+data/*.lock
+data/**/*.lock
+*.lock
+*.vbs
+data/*.vbs
+run_daily_silent.vbs
+
+# Runtime cache & scraped datasets
+data/players/
+data/rankings.json
+data/analysis/
+data/battle_availability/*.lock
+data/battle_availability/*.json
+data/battle_availability/*.jsonl
+
+# Keep essential static structure & test benchmarks
+!data/.gitkeep
+!data/game_config.json
+!data/battle_availability/.gitkeep
+
+# Isolated browser profile
+.browser_profile/
+DebugProfile/
+User Data/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python / Compiler artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Test / Coverage artifacts
+coverage/
+.nyc_output/
