@@ -40,7 +40,7 @@ export async function getGameConfig(forceRefresh = false) {
     try {
       const cached = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
       const age = Date.now() - new Date(cached.updatedAt).getTime();
-      if (age < CONFIG_TTL_MS && cached.config) {
+      if ((age < CONFIG_TTL_MS || process.env.WARERA_TEST === "1") && cached.config) {
         return cached.config;
       }
     } catch {
@@ -49,10 +49,12 @@ export async function getGameConfig(forceRefresh = false) {
   }
 
   const config = await fetchGameConfig();
-  fs.writeFileSync(
-    CONFIG_FILE,
-    JSON.stringify({ updatedAt: new Date().toISOString(), config }, null, 2)
-  );
+  if (process.env.WARERA_TEST !== "1") {
+    fs.writeFileSync(
+      CONFIG_FILE,
+      JSON.stringify({ updatedAt: new Date().toISOString(), config }, null, 2)
+    );
+  }
   return config;
 }
 

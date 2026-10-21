@@ -37,8 +37,8 @@ import {
   executeBattleMode,
   getBattleHitHealthCost,
   pollFreshResourcesAfterHit,
-} from "./battles.mjs";
-import { assertNotUnrest, readResources } from "./daily_automator.mjs";
+} from "../battles.mjs";
+import { assertNotUnrest, readResources } from "../daily_automator.mjs";
 import fs from "fs";
 import os from "os";
 import path from "path";

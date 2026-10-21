@@ -25,6 +25,7 @@ import os from "os";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+process.env.WARERA_TEST = "1";
 import {
   isPackaged,
   getAppDir,
@@ -35,27 +36,27 @@ import {
   getCookiesPath,
   detectRepoData,
   importRepoData,
-} from "./gui/services/paths.mjs";
+} from "../gui/services/paths.mjs";
 import {
   maskSecret,
   loadSettings,
   saveSettings,
   getSanitizedAuthStatus,
-} from "./gui/services/settings_service.mjs";
+} from "../gui/services/settings_service.mjs";
 import {
   getDashboardState,
   checkCdpReachable,
   getLastBattleExecution,
   getLastDailyRunInfo,
-} from "./gui/services/dashboard_service.mjs";
-import { dailyService } from "./gui/services/daily_service.mjs";
-import { battlesService } from "./gui/services/battles_service.mjs";
-import { buyerService } from "./gui/services/buyer_service.mjs";
-import { resellerService } from "./gui/services/reseller_service.mjs";
-import { analyzerService } from "./gui/services/analyzer_service.mjs";
-import { telemetryService } from "./gui/services/telemetry_service.mjs";
-import { schedulerService } from "./gui/services/scheduler_service.mjs";
-import { logsService } from "./gui/services/logs_service.mjs";
+} from "../gui/services/dashboard_service.mjs";
+import { dailyService } from "../gui/services/daily_service.mjs";
+import { battlesService } from "../gui/services/battles_service.mjs";
+import { buyerService } from "../gui/services/buyer_service.mjs";
+import { resellerService } from "../gui/services/reseller_service.mjs";
+import { analyzerService } from "../gui/services/analyzer_service.mjs";
+import { telemetryService } from "../gui/services/telemetry_service.mjs";
+import { schedulerService } from "../gui/services/scheduler_service.mjs";
+import { logsService } from "../gui/services/logs_service.mjs";
 
 console.log("🖥️  Running WarEra Tools GUI & Service Verification Suite...\n");
 
@@ -109,7 +110,7 @@ fs.writeFileSync(
 );
 
 // Copy synthetic fixture into isolated temp app dir
-const fixtureTelemetry = path.resolve(__dirname, "tests", "fixtures", "sample_telemetry.jsonl");
+const fixtureTelemetry = path.resolve(__dirname, "fixtures", "sample_telemetry.jsonl");
 const tempTelemetryDir = path.join(tempAppDir, "data", "battle_availability");
 fs.mkdirSync(tempTelemetryDir, { recursive: true });
 if (fs.existsSync(fixtureTelemetry)) {
@@ -285,7 +286,8 @@ globalThis.fetch = async function mockFetch(url, options = {}) {
   }
 
   if (urlStr.includes("gameConfig.getGameConfig")) {
-    const raw = JSON.parse(fs.readFileSync("data/game_config.json", "utf8"));
+    const configPath = path.resolve(__dirname, "../data/game_config.json");
+    const raw = JSON.parse(fs.readFileSync(configPath, "utf8"));
     const realConfig = raw.config || raw;
     return {
       ok: true,
@@ -615,7 +617,7 @@ try {
   fs.rmSync(tempAppDir, { recursive: true, force: true });
 } catch {}
 try {
-  const rankingsPath = path.resolve(__dirname, "data/rankings.json");
+  const rankingsPath = path.resolve(__dirname, "../data/rankings.json");
   if (fs.existsSync(rankingsPath)) fs.unlinkSync(rankingsPath);
 } catch {}
 

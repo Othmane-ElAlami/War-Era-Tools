@@ -11,7 +11,7 @@ import {
   calculateRollPosition,
   classifyInventoryItems,
   formatWeaponInspection,
-} from "./analyzer/equipment_rolls.mjs";
+} from "../analyzer/equipment_rolls.mjs";
 import {
   filterOutliers,
   gatherComparables,
@@ -21,7 +21,7 @@ import {
   ActiveOffersTracker,
   buildArmorStatCurve,
   analyzeArmorPricing,
-} from "./analyzer/market_pricing.mjs";
+} from "../analyzer/market_pricing.mjs";
 import {
   parseArgs,
   filterCandidates,
@@ -42,7 +42,7 @@ import {
   getItemDisplayName,
   getFullItemTitle,
   formatArmorDebugTrace,
-} from "./equipment_reseller.mjs";
+} from "../equipment_reseller.mjs";
 
 console.log("Running Equipment Reseller Unit Tests...\n");
 

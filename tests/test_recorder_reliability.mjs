@@ -35,7 +35,7 @@ import {
   installWindowsTask,
   uninstallWindowsTask,
   BACKOFF_SCHEDULE,
-} from "./analyzer/recorder_daemon.mjs";
+} from "../analyzer/recorder_daemon.mjs";
 import {
   recordTelemetrySample,
   loadTelemetrySamplesSync,
@@ -44,8 +44,8 @@ import {
   getSyntheticFilePath,
   getLockFilePath,
   getStatusFilePath,
-} from "./analyzer/battle_telemetry.mjs";
-import { fetchWithRetry } from "./analyzer/api.mjs";
+} from "../analyzer/battle_telemetry.mjs";
+import { fetchWithRetry } from "../analyzer/api.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -297,8 +297,8 @@ console.log("  ✓ Task Scheduler XML definition is compliant and dry-run execut
 // Test 12: Synthetic vs Live physical isolation
 // -------------------------------------------------------------
 console.log("Test 12: Verifying physical isolation between synthetic and live datasets...");
-const prodLiveFile = path.resolve(__dirname, "data/battle_availability/telemetry.jsonl");
-const prodSynthFile = path.resolve(__dirname, "data/battle_availability/synthetic.jsonl");
+const prodLiveFile = path.resolve(__dirname, "../data/battle_availability/telemetry.jsonl");
+const prodSynthFile = path.resolve(__dirname, "../data/battle_availability/synthetic.jsonl");
 assert.notStrictEqual(prodLiveFile, prodSynthFile, "File paths must differ");
 assert.ok(prodLiveFile.endsWith("telemetry.jsonl"), "Live file must be telemetry.jsonl");
 assert.ok(prodSynthFile.endsWith("synthetic.jsonl"), "Synthetic file must be synthetic.jsonl");

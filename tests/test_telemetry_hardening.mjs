@@ -33,13 +33,13 @@ import {
   getLatestTelemetryContextSync,
   setTelemetryDataDir,
   resetTelemetryDataDir,
-} from "./analyzer/battle_telemetry.mjs";
-import { simulateSustainedCombat } from "./analyzer/sustain_model.mjs";
-import { resolveBattleSchedule } from "./analyzer/battle_windows.mjs";
+} from "../analyzer/battle_telemetry.mjs";
+import { simulateSustainedCombat } from "../analyzer/sustain_model.mjs";
+import { resolveBattleSchedule } from "../analyzer/battle_windows.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const FIXTURE_TELEMETRY = path.join(__dirname, "tests", "fixtures", "sample_telemetry.jsonl");
+const FIXTURE_TELEMETRY = path.join(__dirname, "fixtures", "sample_telemetry.jsonl");
 
 const TEST_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "warera_test_hardening_"));
 setTelemetryDataDir(TEST_DIR);

@@ -38,7 +38,7 @@ import {
   setTelemetryDataDir,
   resetTelemetryDataDir,
   getTelemetryDataDir,
-} from "./analyzer/battle_telemetry.mjs";
+} from "../analyzer/battle_telemetry.mjs";
 
 // Import recorder daemon
 import {
@@ -47,11 +47,11 @@ import {
   generateTaskXml,
   isPidAlive,
   atomicWriteJson,
-} from "./analyzer/recorder_daemon.mjs";
+} from "../analyzer/recorder_daemon.mjs";
 
 // ─── Production File Snapshot (Pre-flight Integrity Check) ────
 
-const PROD_DIR = path.resolve(__dirname, "data/battle_availability");
+const PROD_DIR = path.resolve(__dirname, "../data/battle_availability");
 const PROD_FILES = {
   telemetry: path.join(PROD_DIR, "telemetry.jsonl"),
   executions: path.join(PROD_DIR, "executions.jsonl"),
@@ -487,7 +487,7 @@ async function test7_productionFilesByteIdentical() {
   assert(!fs.existsSync(PROD_FILES.lock), "Production telemetry.lock was NOT created in repo by tests");
 
   // Verify fixture integrity
-  const fixturePath = path.resolve(__dirname, "tests/fixtures/sample_telemetry.jsonl");
+  const fixturePath = path.resolve(__dirname, "fixtures/sample_telemetry.jsonl");
   assert(fs.existsSync(fixturePath), "Synthetic sample_telemetry.jsonl fixture exists and is trackable");
   const fixtureCount = fs.readFileSync(fixturePath, "utf8").trim().split("\n").filter(Boolean).length;
   assert(fixtureCount === 30, `Synthetic sample_telemetry.jsonl fixture has expected 30 records (got ${fixtureCount})`);

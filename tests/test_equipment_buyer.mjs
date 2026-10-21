@@ -50,7 +50,7 @@ import {
   PurchaseVerificationState,
   refreshAndValidateOffer,
   verifyMarketPurchase,
-} from "./analyzer/buyer_evaluator.mjs";
+} from "../analyzer/buyer_evaluator.mjs";
 import {
   parseArgs,
   runEquipmentBuyer,
@@ -65,8 +65,8 @@ import {
   printSelectedLoadoutCard,
   promptStrategyChoice,
   STRATEGY_CHOICE_PROMPT,
-} from "./equipment_buyer.mjs";
-import { fetchWithRetry } from "./analyzer/api.mjs";
+} from "../equipment_buyer.mjs";
+import { fetchWithRetry } from "../analyzer/api.mjs";
 
 console.log(chalk.bold.cyan("\n=================================================="));
 console.log(chalk.bold.cyan("   WarEra Equipment Buyer - Test Suite"));
@@ -445,7 +445,7 @@ test("15. Pagination handling fetches all pages until end of cursor", async () =
     }
   };
 
-  const { fetchAllMarketOffers } = await import("./analyzer/buyer_evaluator.mjs");
+  const { fetchAllMarketOffers } = await import("../analyzer/buyer_evaluator.mjs");
   const offers = await fetchAllMarketOffers("boots2", { fetchFn: mockFetch });
   assert.strictEqual(pageCount, 2);
   assert.strictEqual(offers.length, 2);
@@ -1023,7 +1023,7 @@ test("42. No automatic substitution: target is locked strictly to selected offer
 // 43. No Automatic Equipping
 await asyncTest("43. No automatic equipping: buyer never invokes equip actions", async () => {
   // Assertion that buyer module only imports and calls market query & purchase endpoints
-  const evaluatorExports = Object.keys(await import("./analyzer/buyer_evaluator.mjs"));
+  const evaluatorExports = Object.keys(await import("../analyzer/buyer_evaluator.mjs"));
   assert.strictEqual(evaluatorExports.includes("equipItem"), false);
 });
 
@@ -2372,7 +2372,7 @@ await asyncTest("100. No automatic equipping: buyer never invokes equip actions"
     submitMarketPurchase: async () => {},
     verifyMarketPurchase: async (offer) => ({ state: "VERIFIED_PURCHASED", verifiedPrice: offer.buyerPrice }),
   });
-  const buyerModule = await import("./equipment_buyer.mjs");
+  const buyerModule = await import("../equipment_buyer.mjs");
   assert.strictEqual(typeof buyerModule.equipItem, "undefined");
   assert.strictEqual(res.purchasedList.length, 1);
 });

@@ -28,7 +28,7 @@ import {
   writeDailyVbsRunner,
   getDailyVbsPath,
   isPidAlive,
-} from "./daily_task.mjs";
+} from "../daily_task.mjs";
 
 let passed = 0;
 let failed = 0;
